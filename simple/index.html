@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GearGuard Maintenance Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --secondary-color: #6b7280;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --background-color: #f9fafb;
+            --card-background: #ffffff;
+            --border-color: #e5e7eb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .gap-6 {
+            gap: 1.5rem;
+        }
+
+        .grid {
+            display: grid;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-cols-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .p-4 {
+            padding: 1rem;
+        }
+
+        .p-6 {
+            padding: 1.5rem;
+        }
+
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .py-4 {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+
+        .mb-8 {
+            margin-bottom: 2rem;
+        }
+
+        .mt-2 {
+            margin-top: 0.5rem;
+        }
+
+        .mt-4 {
+            margin-top: 1rem;
+        }
+
+        .mt-6 {
+            margin-top: 1.5rem;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+        }
+
+        .text-xl {
+            font-size: 1.25rem;
+        }
+
+        .text-2xl {
+            font-size: 1.5rem;
+        }
+
+        .text-3xl {
+            font-size: 1.875rem;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .rounded {
+            border-radius: 4px;
+        }
+
+        .rounded-lg {
+            border-radius: var(--radius);
+        }
+
+        .shadow-sm {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .shadow-md {
+            box-shadow: var(--shadow-md);
+        }
+
+        .shadow-lg {
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Component Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: #f3f4f6;
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 0.875rem;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-danger {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-info {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Layout */
+        .header {
+            background-color: var(--card-background);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--card-background);
+            border-right: 1px solid var(--border-color);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s;
+            border-radius: var(--radius);
+            margin: 0.25rem 0.5rem;
+        }
+
+        .nav-item:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #f9fafb;
+            padding: 0.75rem 1.5rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        /* Kanban Board */
+        .kanban-container {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 1rem 0;
+        }
+
+        .kanban-column {
+            min-width: 300px;
+            background-color: #f9fafb;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+        }
+
+        .kanban-card {
+            background-color: white;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: grab;
+            transition: all 0.2s;
+        }
+
+        .kanban-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .kanban-card.dragging {
+            opacity: 0.5;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .grid-cols-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .grid-cols-2, .grid-cols-3, .grid-cols-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="flex items-center justify-center min-h-screen">
+        <div class="card p-8" style="max-width: 400px; width: 100%;">
+            <div class="text-center mb-8">
+                <div class="flex justify-center mb-4">
+                    <div style="background-color: var(--primary-color); padding: 1rem; border-radius: var(--radius);">
+                        <i class="fas fa-tools text-white" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold mb-2">GearGuard Maintenance Tracker</h2>
+                <p class="text-secondary">Sign in to manage your maintenance operations</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Email Address</label>
+                    <input type="email" id="email" class="input" placeholder="you@example.com" required>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2">Password</label>
+                    <input type="password" id="password" class="input" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-full mb-4">
+                    Sign In
+                </button>
+                
+                <div class="text-center text-sm">
+                    <p class="mb-2">Demo Credentials:</p>
+                    <p>Admin: admin@example.com / admin123</p>
+                    <p>User: user@example.com / user123</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app" class="hidden">
+        <!-- Header -->
+        <header class="header py-4">
+            <div class="container flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <button id="menuToggle" class="btn btn-secondary md:hidden">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <div style="background-color: var(--primary-color); padding: 0.5rem; border-radius: var(--radius);">
+                            <i class="fas fa-tools text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="font-bold">GearGuard</h1>
+                            <p class="text-sm text-secondary">Maintenance Tracker</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <span id="userName" class="font-medium"></span>
+                    <button id="logoutBtn" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="p-4 border-b">
+                    <div class="flex items-center gap-3">
+                        <div id="userAvatar" class="flex items-center justify-center w-10 h-10 bg-primary-light text-primary-color rounded-full font-bold"></div>
+                        <div>
+                            <p id="sidebarUserName" class="font-medium"></p>
+                            <p id="userRole" class="text-sm text-secondary"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <nav class="p-2">
+                    <a href="#" class="nav-item active" data-page="dashboard">
+                        <i class="nav-icon fas fa-home"></i> Dashboard
+                    </a>
+                    <a href="#" class="nav-item" data-page="equipment">
+                        <i class="nav-icon fas fa-wrench"></i> Equipment
+                    </a>
+                    <a href="#" class="nav-item" data-page="requests">
+                        <i class="nav-icon fas fa-clipboard-list"></i> Maintenance Requests
+                    </a>
+                    <a href="#" class="nav-item" data-page="calendar">
+                        <i class="nav-icon fas fa-calendar"></i> Calendar
+                    </a>
+                    <a href="#" class="nav-item" data-page="teams">
+                        <i class="nav-icon fas fa-users"></i> Teams
+                    </a>
+                    <a href="#" class="nav-item" data-page="reports">
+                        <i class="nav-icon fas fa-chart-bar"></i> Reports
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <div class="container py-6">
+                    <!-- Page content will be dynamically loaded here -->
+                    <div id="pageContent"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Page Templates -->
+    <template id="dashboardTemplate">
+        <div class="animate-fadeIn">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">Welcome back, <span id="welcomeName"></span>! 👋</h2>
+                <p class="text-secondary">Here's what's happening with your maintenance operations today.</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="card p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-secondary mb-1">Total Requests</p>
+                            <p class="text-2xl font-bold">24</p>
+                        </div>
+                        <div style="background-color: var(--primary-light); padding: 0.75rem; border-radius: var(--radius);">
+                            <i class="fas fa-clipboard-list text-primary-color"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-secondary mb-1">Overdue</p>
+                            <p class="text-2xl font-bold" style="color: var(--danger-color);">3</p>
+                        </div>
+                        <div style="background-color: #fee2e2; padding: 0.75rem; border-radius: var(--radius);">
+                            <i class="fas fa-exclamation-triangle text-danger-color"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-secondary mb-1">Equipment</p>
+                            <p class="text-2xl font-bold">156</p>
+                        </div>
+                        <div style="background-color: #d1fae5; padding: 0.75rem; border-radius: var(--radius);">
+                            <i class="fas fa-wrench text-success-color"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-secondary mb-1">Active Teams</p>
+                            <p class="text-2xl font-bold">8</p>
+                        </div>
+                        <div style="background-color: #fef3c7; padding: 0.75rem; border-radius: var(--radius);">
+                            <i class="fas fa-users text-warning-color"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Recent Requests -->
+                <div class="card">
+                    <div class="p-6 border-b">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold">Recent Requests</h3>
+                            <a href="#" class="text-primary-color hover:underline" data-page="requests">View all →</a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded">
+                                <div>
+                                    <p class="font-medium">Oil Leak in CNC Machine</p>
+                                    <p class="text-sm text-secondary">CNC Machine #5 • Mechanics Team</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <span class="badge badge-danger">High</span>
+                                    <span class="badge badge-warning">In Progress</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded">
+                                <div>
+                                    <p class="font-medium">Server Room AC Failure</p>
+                                    <p class="text-sm text-secondary">Server Rack #1 • IT Support</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <span class="badge badge-danger">High</span>
+                                    <span class="badge badge-info">New</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Equipment -->
+                <div class="card">
+                    <div class="p-6 border-b">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold">Equipment Status</h3>
+                            <a href="#" class="text-primary-color hover:underline" data-page="equipment">View all →</a>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded">
+                                <div>
+                                    <p class="font-medium">CNC Machine #5</p>
+                                    <p class="text-sm text-secondary">CNC-2023-005 • Manufacturing</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <span class="badge badge-warning">Maintenance</span>
+                                    <a href="#" class="text-primary-color hover:underline">View</a>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded">
+                                <div>
+                                    <p class="font-medium">Server Rack #1</p>
+                                    <p class="text-sm text-secondary">SRV-2023-001 • IT Department</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <span class="badge badge-success">Working</span>
+                                    <a href="#" class="text-primary-color hover:underline">View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card p-6">
+                <h3 class="text-lg font-semibold mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <a href="#" class="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-color hover:bg-primary-light transition-colors group" data-page="requests" data-action="new">
+                        <div class="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center mb-3 group-hover:bg-primary-color group-hover:text-white transition-colors">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <span class="font-medium">New Request</span>
+                        <span class="text-sm text-secondary mt-1">Report an issue</span>
+                    </a>
+
+                    <a href="#" class="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-color hover:bg-primary-light transition-colors group" data-page="equipment" data-action="new">
+                        <div class="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center mb-3 group-hover:bg-primary-color group-hover:text-white transition-colors">
+                            <i class="fas fa-wrench"></i>
+                        </div>
+                        <span class="font-medium">Add Equipment</span>
+                        <span class="text-sm text-secondary mt-1">Register new asset</span>
+                    </a>
+
+                    <a href="#" class="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-color hover:bg-primary-light transition-colors group" data-page="calendar">
+                        <div class="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center mb-3 group-hover:bg-primary-color group-hover:text-white transition-colors">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <span class="font-medium">View Calendar</span>
+                        <span class="text-sm text-secondary mt-1">Schedule maintenance</span>
+                    </a>
+
+                    <a href="#" class="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-color hover:bg-primary-light transition-colors group" data-page="reports">
+                        <div class="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center mb-3 group-hover:bg-primary-color group-hover:text-white transition-colors">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <span class="font-medium">Reports</span>
+                        <span class="text-sm text-secondary mt-1">View analytics</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="equipmentTemplate">
+        <div class="animate-fadeIn">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold mb-2">Equipment Management</h2>
+                    <p class="text-secondary">Track and manage all company assets</p>
+                </div>
+                <button class="btn btn-primary" id="addEquipmentBtn">
+                    <i class="fas fa-plus mr-2"></i> Add Equipment
+                </button>
+            </div>
+
+            <div class="card overflow-hidden">
+                <div class="p-6 border-b">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">All Equipment (2)</h3>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="Search equipment..." class="input" style="width: 200px;">
+                            <select class="input" style="width: 150px;">
+                                <option>All Status</option>
+                                <option>Working</option>
+                                <option>Maintenance</option>
+                                <option>Scrap</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Serial Number</th>
+                                <th>Department</th>
+                                <th>Status</th>
+                                <th>Maintenance Team</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="font-medium">CNC Machine #5</div>
+                                    <div class="text-sm text-secondary">Production</div>
+                                </td>
+                                <td>CNC-2023-005</td>
+                                <td>Manufacturing</td>
+                                <td><span class="badge badge-warning">Maintenance</span></td>
+                                <td>Mechanics</td>
+                                <td>
+                                    <div class="flex gap-2">
+                                        <button class="text-primary-color hover:underline">View</button>
+                                        <button class="text-secondary hover:underline">Edit</button>
+                                        <button class="text-success-color hover:underline">Request</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="font-medium">Server Rack #1</div>
+                                    <div class="text-sm text-secondary">IT</div>
+                                </td>
+                                <td>SRV-2023-001</td>
+                                <td>IT Department</td>
+                                <td><span class="badge badge-success">Working</span></td>
+                                <td>IT Support</td>
+                                <td>
+                                    <div class="flex gap-2">
+                                        <button class="text-primary-color hover:underline">View</button>
+                                        <button class="text-secondary hover:underline">Edit</button>
+                                        <button class="text-success-color hover:underline">Request</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="requestsTemplate">
+        <div class="animate-fadeIn">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold mb-2">Maintenance Requests</h2>
+                    <p class="text-secondary">Track and manage all maintenance activities</p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="btn btn-secondary" id="kanbanViewBtn">
+                        <i class="fas fa-th-large mr-2"></i> Kanban
+                    </button>
+                    <button class="btn btn-secondary" id="listViewBtn">
+                        <i class="fas fa-list mr-2"></i> List
+                    </button>
+                    <button class="btn btn-primary" id="newRequestBtn">
+                        <i class="fas fa-plus mr-2"></i> New Request
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <select class="input">
+                    <option>All Status</option>
+                    <option>New</option>
+                    <option>In Progress</option>
+                    <option>Completed</option>
+                    <option>Scrap</option>
+                </select>
+                <select class="input">
+                    <option>All Priorities</option>
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
+                </select>
+                <select class="input">
+                    <option>All Teams</option>
+                    <option>Mechanics</option>
+                    <option>Electricians</option>
+                    <option>IT Support</option>
+                </select>
+            </div>
+
+            <!-- Kanban View -->
+            <div id="kanbanView">
+                <div class="kanban-container">
+                    <div class="kanban-column">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-semibold">New (2)</h4>
+                        </div>
+                        <div class="kanban-card" draggable="true">
+                            <div class="flex justify-between items-start mb-2">
+                                <h5 class="font-medium">Server Room AC Failure</h5>
+                                <span class="badge badge-danger">High</span>
+                            </div>
+                            <p class="text-sm text-secondary mb-2">Server Rack #1 (SRV-2023-001)</p>
+                            <p class="text-sm text-secondary mb-3">Team: IT Support</p>
+                        </div>
+                        <div class="kanban-card" draggable="true">
+                            <div class="flex justify-between items-start mb-2">
+                                <h5 class="font-medium">Printer Paper Jam</h5>
+                                <span class="badge badge-warning">Medium</span>
+                            </div>
+                            <p class="text-sm text-secondary mb-2">Printer #3 (PRT-2023-003)</p>
+                            <p class="text-sm text-secondary mb-3">Team: IT Support</p>
+                        </div>
+                    </div>
+
+                    <div class="kanban-column">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-semibold">In Progress (3)</h4>
+                        </div>
+                        <div class="kanban-card" draggable="true">
+                            <div class="flex justify-between items-start mb-2">
+                                <h5 class="font-medium">Oil Leak in CNC Machine</h5>
+                                <span class="badge badge-danger">High</span>
+                            </div>
+                            <p class="text-sm text-secondary mb-2">CNC Machine #5 (CNC-2023-005)</p>
+                            <p class="text-sm text-secondary mb-3">Team: Mechanics • Assigned to: Mike</p>
+                            <div class="text-sm text-danger-color font-medium flex items-center">
+                                <i class="fas fa-exclamation-triangle mr-1"></i> OVERDUE
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kanban-column">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-semibold">Completed (1)</h4>
+                        </div>
+                        <div class="kanban-card" draggable="true">
+                            <div class="flex justify-between items-start mb-2">
+                                <h5 class="font-medium">Replace Light Bulbs</h5>
+                                <span class="badge badge-success">Low</span>
+                            </div>
+                            <p class="text-sm text-secondary mb-2">Workshop Area</p>
+                            <p class="text-sm text-secondary mb-3">Team: Electricians • Hours: 2</p>
+                        </div>
+                    </div>
+
+                    <div class="kanban-column">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-semibold">Scrap (0)</h4>
+                        </div>
+                        <p class="text-center text-secondary py-8">No items</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List View (Hidden by default) -->
+            <div id="listView" class="hidden">
+                <div class="card overflow-hidden">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Equipment</th>
+                                    <th>Issue</th>
+                                    <th>Team</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="font-medium">CNC Machine #5</div>
+                                        <div class="text-sm text-secondary">CNC-2023-005</div>
+                                    </td>
+                                    <td>
+                                        <div class="font-medium">Oil Leak in CNC Machine</div>
+                                        <div class="text-sm text-secondary">Machine leaking hydraulic oil...</div>
+                                    </td>
+                                    <td><span class="badge badge-info">Mechanics</span></td>
+                                    <td><span class="badge badge-danger">High</span></td>
+                                    <td>
+                                        <select class="input text-sm">
+                                            <option>New</option>
+                                            <option selected>In Progress</option>
+                                            <option>Completed</option>
+                                            <option>Scrap</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="flex gap-2">
+                                            <button class="text-primary-color hover:underline">View</button>
+                                            <button class="text-success-color hover:underline">Assign to me</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="calendarTemplate">
+        <div class="animate-fadeIn">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">Maintenance Calendar</h2>
+                <p class="text-secondary">View and schedule preventive maintenance</p>
+            </div>
+
+            <div class="card p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold">January 2024</h3>
+                    <div class="flex gap-2">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <button class="btn btn-secondary">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-7 gap-2 mb-4">
+                    <div class="text-center font-semibold py-2">Sun</div>
+                    <div class="text-center font-semibold py-2">Mon</div>
+                    <div class="text-center font-semibold py-2">Tue</div>
+                    <div class="text-center font-semibold py-2">Wed</div>
+                    <div class="text-center font-semibold py-2">Thu</div>
+                    <div class="text-center font-semibold py-2">Fri</div>
+                    <div class="text-center font-semibold py-2">Sat</div>
+                </div>
+
+                <div class="grid grid-cols-7 gap-2">
+                    <!-- Calendar days will be generated here -->
+                    <div class="border rounded-lg p-2 min-h-24">
+                        <div class="font-medium mb-1">1</div>
+                        <div class="text-xs bg-green-100 text-green-800 p-1 rounded mb-1">Monthly Server Check</div>
+                    </div>
+                    <div class="border rounded-lg p-2 min-h-24">2</div>
+                    <div class="border rounded-lg p-2 min-h-24">3</div>
+                    <div class="border rounded-lg p-2 min-h-24">4</div>
+                    <div class="border rounded-lg p-2 min-h-24">
+                        <div class="font-medium mb-1">5</div>
+                        <div class="text-xs bg-red-100 text-red-800 p-1 rounded mb-1">CNC Maintenance</div>
+                    </div>
+                    <div class="border rounded-lg p-2 min-h-24">6</div>
+                    <div class="border rounded-lg p-2 min-h-24">7</div>
+                </div>
+
+                <div class="mt-6 pt-6 border-t">
+                    <div class="flex items-center gap-4 text-sm mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-green-500 rounded"></div>
+                            <span>Preventive Maintenance</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-red-500 rounded"></div>
+                            <span>Corrective Maintenance</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus mr-2"></i> Schedule Maintenance
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="teamsTemplate">
+        <div class="animate-fadeIn">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">Maintenance Teams</h2>
+                <p class="text-secondary">Manage specialized maintenance teams</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-blue-100 text-blue-800 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-cogs text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Mechanics Team</h3>
+                            <p class="text-sm text-secondary">Code: MECH</p>
+                        </div>
+                    </div>
+                    <p class="text-secondary mb-4">Responsible for mechanical equipment and machinery maintenance.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-secondary">3 members</span>
+                        <button class="btn btn-secondary text-sm">View Team</button>
+                    </div>
+                </div>
+
+                <div class="card p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-yellow-100 text-yellow-800 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-bolt text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Electricians</h3>
+                            <p class="text-sm text-secondary">Code: ELEC</p>
+                        </div>
+                    </div>
+                    <p class="text-secondary mb-4">Handle electrical systems and equipment maintenance.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-secondary">4 members</span>
+                        <button class="btn btn-secondary text-sm">View Team</button>
+                    </div>
+                </div>
+
+                <div class="card p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-purple-100 text-purple-800 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-laptop-code text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">IT Support</h3>
+                            <p class="text-sm text-secondary">Code: IT</p>
+                        </div>
+                    </div>
+                    <p class="text-secondary mb-4">Manage computers, servers, and network equipment.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-secondary">5 members</span>
+                        <button class="btn btn-secondary text-sm">View Team</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="reportsTemplate">
+        <div class="animate-fadeIn">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">Reports & Analytics</h2>
+                <p class="text-secondary">Track maintenance performance and trends</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold mb-4">Request Status Distribution</h3>
+                    <div class="flex items-center justify-center h-64">
+                        <div class="text-center">
+                            <div class="relative w-48 h-48 mx-auto mb-4">
+                                <!-- Pie chart visualization -->
+                                <div class="absolute inset-0 rounded-full border-8 border-blue-500"></div>
+                                <div class="absolute inset-0 rounded-full border-8 border-yellow-500 transform -rotate-45"></div>
+                                <div class="absolute inset-0 rounded-full border-8 border-green-500 transform -rotate-90"></div>
+                                <div class="absolute inset-0 rounded-full border-8 border-red-500 transform -rotate-135"></div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 bg-blue-500 rounded"></div>
+                                    <span>New: 8</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 bg-yellow-500 rounded"></div>
+                                    <span>In Progress: 12</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 bg-green-500 rounded"></div>
+                                    <span>Completed: 4</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 bg-red-500 rounded"></div>
+                                    <span>Scrap: 0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">Priority Distribution</h3>
+                        <select class="input text-sm" style="width: 150px;">
+                            <option>This Month</option>
+                            <option>This Week</option>
+                            <option>This Year</option>
+                        </select>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm">High Priority</span>
+                                <span class="text-sm font-medium">6</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-red-500" style="width: 25%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm">Medium Priority</span>
+                                <span class="text-sm font-medium">14</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-yellow-500" style="width: 58%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm">Low Priority</span>
+                                <span class="text-sm font-medium">4</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-green-500" style="width: 17%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-6">
+                <h3 class="text-lg font-semibold mb-4">Team Performance</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Team</th>
+                                <th>Total Requests</th>
+                                <th>Completed</th>
+                                <th>In Progress</th>
+                                <th>Avg. Resolution Time</th>
+                                <th>Satisfaction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="font-medium">Mechanics</td>
+                                <td>24</td>
+                                <td>18</td>
+                                <td>6</td>
+                                <td>2.5 days</td>
+                                <td><span class="badge badge-success">95%</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium">Electricians</td>
+                                <td>18</td>
+                                <td>15</td>
+                                <td>3</td>
+                                <td>1.8 days</td>
+                                <td><span class="badge badge-success">92%</span></td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium">IT Support</td>
+                                <td>32</td>
+                                <td>28</td>
+                                <td>4</td>
+                                <td>1.2 days</td>
+                                <td><span class="badge badge-success">98%</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Modals -->
+    <div id="newRequestModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">New Maintenance Request</h3>
+                <button class="text-secondary" onclick="closeModal('newRequestModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="requestForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Equipment *</label>
+                    <select class="input" required>
+                        <option value="">Select Equipment</option>
+                        <option>CNC Machine #5 (CNC-2023-005)</option>
+                        <option>Server Rack #1 (SRV-2023-001)</option>
+                        <option>Printer #3 (PRT-2023-003)</option>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Request Type *</label>
+                    <div class="flex gap-4">
+                        <label class="flex items-center">
+                            <input type="radio" name="type" value="corrective" checked class="mr-2">
+                            <span>Corrective (Breakdown)</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="type" value="preventive" class="mr-2">
+                            <span>Preventive (Routine)</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Issue Title *</label>
+                    <input type="text" class="input" placeholder="Brief description of the issue" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Issue Description *</label>
+                    <textarea class="input" rows="4" placeholder="Detailed description..." required></textarea>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2">Priority *</label>
+                    <select class="input" required>
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                
+                <div class="flex gap-4">
+                    <button type="button" class="btn btn-secondary flex-1" onclick="closeModal('newRequestModal')">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary flex-1">
+                        Create Request
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="newEquipmentModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Add New Equipment</h3>
+                <button class="text-secondary" onclick="closeModal('newEquipmentModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="equipmentForm">
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Equipment Name *</label>
+                        <input type="text" class="input" placeholder="e.g., CNC Machine #6" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Serial Number *</label>
+                        <input type="text" class="input" placeholder="e.g., CNC-2024-001" required>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Category *</label>
+                        <select class="input" required>
+                            <option value="">Select Category</option>
+                            <option>Production</option>
+                            <option>IT</option>
+                            <option>Office</option>
+                            <option>Vehicle</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Department *</label>
+                        <select class="input" required>
+                            <option value="">Select Department</option>
+                            <option>Manufacturing</option>
+                            <option>IT Department</option>
+                            <option>Administration</option>
+                            <option>Logistics</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Location *</label>
+                    <input type="text" class="input" placeholder="e.g., Production Floor B" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Maintenance Team *</label>
+                    <select class="input" required>
+                        <option value="">Select Team</option>
+                        <option>Mechanics</option>
+                        <option>Electricians</option>
+                        <option>IT Support</option>
+                    </select>
+                </div>
+                
+                <div class="flex gap-4">
+                    <button type="button" class="btn btn-secondary flex-1" onclick="closeModal('newEquipmentModal')">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary flex-1">
+                        Add Equipment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        const state = {
+            currentUser: null,
+            currentPage: 'dashboard',
+            isMobileMenuOpen: false,
+            requestsViewMode: 'kanban' // 'kanban' or 'list'
+        };
+
+        // Mock Data
+        const users = {
+            'admin@example.com': {
+                name: 'Admin User',
+                email: 'admin@example.com',
+                role: 'admin',
+                avatar: 'A'
+            },
+            'user@example.com': {
+                name: 'John Doe',
+                email: 'user@example.com',
+                role: 'user',
+                avatar: 'J'
+            },
+            'tech@example.com': {
+                name: 'Mike Johnson',
+                email: 'tech@example.com',
+                role: 'technician',
+                avatar: 'M'
+            }
+        };
+
+        // DOM Elements
+        const loginScreen = document.getElementById('loginScreen');
+        const app = document.getElementById('app');
+        const loginForm = document.getElementById('loginForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const pageContent = document.getElementById('pageContent');
+        const navItems = document.querySelectorAll('.nav-item');
+        const userName = document.getElementById('userName');
+        const sidebarUserName = document.getElementById('sidebarUserName');
+        const userRole = document.getElementById('userRole');
+        const userAvatar = document.getElementById('userAvatar');
+        const welcomeName = document.getElementById('welcomeName');
+        const kanbanView = document.getElementById('kanbanView');
+        const listView = document.getElementById('listView');
+        const kanbanViewBtn = document.getElementById('kanbanViewBtn');
+        const listViewBtn = document.getElementById('listViewBtn');
+        const newRequestBtn = document.getElementById('newRequestBtn');
+        const addEquipmentBtn = document.getElementById('addEquipmentBtn');
+
+        // Templates
+        const templates = {
+            dashboard: document.getElementById('dashboardTemplate'),
+            equipment: document.getElementById('equipmentTemplate'),
+            requests: document.getElementById('requestsTemplate'),
+            calendar: document.getElementById('calendarTemplate'),
+            teams: document.getElementById('teamsTemplate'),
+            reports: document.getElementById('reportsTemplate')
+        };
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is already logged in
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                state.currentUser = JSON.parse(savedUser);
+                showApp();
+                loadPage('dashboard');
+            }
+
+            // Event Listeners
+            loginForm.addEventListener('submit', handleLogin);
+            logoutBtn.addEventListener('click', handleLogout);
+            menuToggle.addEventListener('click', toggleMobileMenu);
+            newRequestBtn?.addEventListener('click', () => showModal('newRequestModal'));
+            addEquipmentBtn?.addEventListener('click', () => showModal('newEquipmentModal'));
+            kanbanViewBtn?.addEventListener('click', () => switchRequestsView('kanban'));
+            listViewBtn?.addEventListener('click', () => switchRequestsView('list'));
+
+            // Navigation
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = item.getAttribute('data-page');
+                    loadPage(page);
+                    
+                    // Update active nav item
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    // Close mobile menu on navigation
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.remove('active');
+                    }
+                });
+            });
+
+            // Quick Actions
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('[data-action="new"]')) {
+                    e.preventDefault();
+                    if (e.target.closest('[data-page="requests"]')) {
+                        showModal('newRequestModal');
+                    } else if (e.target.closest('[data-page="equipment"]')) {
+                        showModal('newEquipmentModal');
+                    }
+                }
+            });
+
+            // Form Submissions
+            const requestForm = document.getElementById('requestForm');
+            const equipmentForm = document.getElementById('equipmentForm');
+            
+            if (requestForm) {
+                requestForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    alert('Maintenance request created successfully!');
+                    closeModal('newRequestModal');
+                });
+            }
+            
+            if (equipmentForm) {
+                equipmentForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    alert('Equipment added successfully!');
+                    closeModal('newEquipmentModal');
+                });
+            }
+
+            // Initialize drag and drop for Kanban
+            initDragAndDrop();
+        });
+
+        // Functions
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+            
+            // Check credentials (in real app, this would be API call)
+            if (users[email] && password === 'admin123' || password === 'user123' || password === 'tech123') {
+                state.currentUser = users[email];
+                localStorage.setItem('currentUser', JSON.stringify(state.currentUser));
+                showApp();
+                loadPage('dashboard');
+            } else {
+                alert('Invalid credentials. Please try again.');
+            }
+        }
+
+        function handleLogout() {
+            state.currentUser = null;
+            localStorage.removeItem('currentUser');
+            showLogin();
+        }
+
+        function showApp() {
+            loginScreen.classList.add('hidden');
+            app.classList.remove('hidden');
+            
+            // Update user info
+            if (state.currentUser) {
+                userName.textContent = state.currentUser.name;
+                sidebarUserName.textContent = state.currentUser.name;
+                userRole.textContent = state.currentUser.role.toUpperCase();
+                userAvatar.textContent = state.currentUser.avatar;
+                if (welcomeName) {
+                    welcomeName.textContent = state.currentUser.name;
+                }
+            }
+        }
+
+        function showLogin() {
+            app.classList.add('hidden');
+            loginScreen.classList.remove('hidden');
+            loginForm.reset();
+        }
+
+        function toggleMobileMenu() {
+            sidebar.classList.toggle('active');
+            state.isMobileMenuOpen = !state.isMobileMenuOpen;
+        }
+
+        function loadPage(page) {
+            state.currentPage = page;
+            
+            if (templates[page]) {
+                const content = templates[page].content.cloneNode(true);
+                pageContent.innerHTML = '';
+                pageContent.appendChild(content);
+                
+                // Update page-specific elements
+                if (page === 'requests') {
+                    updateRequestsView();
+                }
+            }
+        }
+
+        function switchRequestsView(mode) {
+            state.requestsViewMode = mode;
+            updateRequestsView();
+            
+            // Update button states
+            if (kanbanViewBtn && listViewBtn) {
+                if (mode === 'kanban') {
+                    kanbanViewBtn.classList.add('btn-primary');
+                    kanbanViewBtn.classList.remove('btn-secondary');
+                    listViewBtn.classList.add('btn-secondary');
+                    listViewBtn.classList.remove('btn-primary');
+                } else {
+                    listViewBtn.classList.add('btn-primary');
+                    listViewBtn.classList.remove('btn-secondary');
+                    kanbanViewBtn.classList.add('btn-secondary');
+                    kanbanViewBtn.classList.remove('btn-primary');
+                }
+            }
+        }
+
+        function updateRequestsView() {
+            if (kanbanView && listView) {
+                if (state.requestsViewMode === 'kanban') {
+                    kanbanView.classList.remove('hidden');
+                    listView.classList.add('hidden');
+                } else {
+                    listView.classList.remove('hidden');
+                    kanbanView.classList.add('hidden');
+                }
+            }
+        }
+
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function initDragAndDrop() {
+            const cards = document.querySelectorAll('.kanban-card');
+            const columns = document.querySelectorAll('.kanban-column');
+            
+            cards.forEach(card => {
+                card.addEventListener('dragstart', handleDragStart);
+                card.addEventListener('dragend', handleDragEnd);
+            });
+            
+            columns.forEach(column => {
+                column.addEventListener('dragover', handleDragOver);
+                column.addEventListener('drop', handleDrop);
+            });
+        }
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.id || 'card');
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const card = document.querySelector('.kanban-card.dragging');
+            if (card && e.target.closest('.kanban-column')) {
+                e.target.closest('.kanban-column').appendChild(card);
+                
+                // In a real app, you would update the status via API
+                const columnTitle = e.target.closest('.kanban-column').querySelector('h4').textContent;
+                console.log(`Card moved to: ${columnTitle}`);
+            }
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+        });
+
+        // Handle responsive behavior
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
